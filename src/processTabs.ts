@@ -13,7 +13,7 @@ export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
 
       if (tab.input instanceof vscode.TabInputText) {
 
-        if (tab.input.uri.scheme !== 'vscode-userdata' && tab.input.uri.scheme !== 'vscode-settings') {
+        if (tab.input.uri.scheme !== 'vscode-userdata'  &&  tab.input.uri.scheme !== 'vscode-settings') {
           if (await isNonWorkspace(tab.input.uri)) await setTabToReadOnly(tab.input.uri, tab.isActive);
         }
       }
@@ -26,7 +26,7 @@ export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
 export async function setTabToReadOnly(Uri: vscode.Uri, active: boolean)  {
 
   // check if activeGroup too?
-  if (Uri.scheme !== 'vscode-userdata' && Uri.scheme !== 'vscode-settings') {
+  if (Uri.scheme !== 'vscode-userdata'  &&  Uri.scheme !== 'vscode-settings') {
 
     // if not the active tab
     if (!active) await vscode.commands.executeCommand('vscode.open', Uri);

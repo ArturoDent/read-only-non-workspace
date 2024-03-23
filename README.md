@@ -10,7 +10,7 @@ A lock icon will appear in the editor tab for any file set as read-only.
 
 ## Extension Settings
 
-This extension contributes the following settings:
+This extension contributes the following setting:
 
 * `Read-only > Non-workspace Files: Enable`: enable/disable this extension
 
@@ -30,6 +30,11 @@ File: Reset Active Editor Read-only in Session
 
 If you have more than 8 editor groups open - and one of those beyond 8 is the active group - this extension cannot properly refocus the active editor group after setting any non-workspace files to read-only.
 
+Unrelated to this extension, but if you want file to marked and locked as read-only because they are read-only in the file system, then make sure you have this setting enabled:  `Files: Readonly From Permissions`
+
 ## Release Notes
 
 * 0.1.0 Initial release.
+
+* 0.1.1 Add a missing `await`.
+

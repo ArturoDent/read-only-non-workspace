@@ -15,13 +15,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// ---------------------------------------------------------------------------------------------
 
-	vscode.workspace.onDidOpenTextDocument(event => {
-		console.log();
-	});
+	// vscode.workspace.onDidOpenTextDocument(event => {
+	// 	console.log();
+	// });
 
 	vscode.window.onDidChangeActiveTextEditor(async event => {
 		const Uri = event?.document?.uri;
-		if (Uri && await isNonWorkspace(Uri)) setTabToReadOnly(Uri, true);
+		if (Uri  &&  await isNonWorkspace(Uri)) await setTabToReadOnly(Uri, true);
 	});
 
   // ---------------------------------------------------------------------------------------------
