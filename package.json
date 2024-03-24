@@ -2,7 +2,7 @@
 	"name": "read-only-non-workspace",
 	"displayName": "Read-only: Non-workspace files",
 	"description": "Set all non-workspace files to read-only",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"preview": true,
 	"publisher": "ArturoDent",
 	"license": "MIT",

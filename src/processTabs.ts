@@ -25,19 +25,16 @@ export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
 
 export async function setTabToReadOnly(Uri: vscode.Uri, active: boolean)  {
 
-  // check if activeGroup too?
-  if (Uri.scheme !== 'vscode-userdata'  &&  Uri.scheme !== 'vscode-settings') {
-
-    // if not the active tab
-    if (!active) await vscode.commands.executeCommand('vscode.open', Uri);
-    await vscode.commands.executeCommand('workbench.action.files.setActiveEditorReadonlyInSession');
-  }
+    // if not the active tab, make it active so can use the setActiveEditorReadonlyInSession command
+  if (!active) await vscode.commands.executeCommand('vscode.open', Uri);
+  await vscode.commands.executeCommand('workbench.action.files.setActiveEditorReadonlyInSession');
 }
+
 
 export async function getActiveTabs(tabGroups: vscode.TabGroups): Promise<vscode.Tab[]> {
-
   return  tabGroups?.all?.map((group, index) => group?.activeTab ) as vscode.Tab[];
 }
+
 
 export async function resetActiveTabs(tabGroups: vscode.TabGroups, activeGroup: vscode.TabGroup, activeTabs: vscode.Tab[]) {
 
