@@ -36,3 +36,7 @@ export async function getfocusGroupCommand(viewColumn: Number): Promise<string> 
 	}
 }
 
+export function isVSCodeScheme(scheme: string): boolean {
+	return (scheme === 'vscode-userdata' || scheme === 'vscode-settings' || scheme === 'output' || scheme === 'git');
+}
+

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { EXTENSION_NAME, DecoratorSettings, getSettings } from "./config";
 import { setTabsToReadOnly, setTabToReadOnly, isNonWorkspace } from "./processTabs";
+import { isVSCodeScheme } from "./utilities";
 
 
 
@@ -21,7 +22,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.window.onDidChangeActiveTextEditor(async event => {
 		const Uri = event?.document?.uri;
-		const notVSCodeScheme = (Uri?.scheme !== 'vscode-userdata')  &&  (Uri?.scheme !== 'vscode-settings');
+		const notVSCodeScheme = Uri !== undefined  &&  !isVSCodeScheme(Uri.scheme);
 		
 		if (Uri  &&  notVSCodeScheme  &&  await isNonWorkspace(Uri)) await setTabToReadOnly(Uri, true);
 	});
