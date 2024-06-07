@@ -36,3 +36,10 @@ export async function getfocusGroupCommand(viewColumn: Number): Promise<string> 
 	}
 }
 
+export function schemeToIgnore(scheme: string): boolean {
+	
+	const ignoreList = ['vscode-userdata', 'vscode-settings', 'output', 'git'];	
+	return ignoreList.includes(scheme);
+	// return (scheme === 'vscode-userdata'  ||  scheme === 'vscode-settings'  ||  scheme === 'output'  ||  scheme === 'git');
+}
+

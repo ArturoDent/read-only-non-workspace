@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 export const EXTENSION_NAME = "read-only.non-workspaceFiles";
 
 export interface DecoratorSettings {
-  enableReadonly: boolean,
+  enableReadonly: boolean
 };
 
 

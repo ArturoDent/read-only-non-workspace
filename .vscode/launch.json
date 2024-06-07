@@ -11,6 +11,9 @@
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
 			"args": [
+				
+				// "${workspaceFolder}/../TestMultiRoot/.vscode/TestMultiRoot.code-workspace",
+				
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [

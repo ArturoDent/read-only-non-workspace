@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import { EXTENSION_NAME, DecoratorSettings, getSettings } from "./config";
 import { setTabsToReadOnly, setTabToReadOnly, isNonWorkspace } from "./processTabs";
+import { schemeToIgnore } from './utilities';
 
 
 
 export async function activate(context: vscode.ExtensionContext) {
 
-	const settingsObject: DecoratorSettings = await getSettings();
+	let settingsObject: DecoratorSettings = await getSettings();
+	
 	let tabGroups: vscode.TabGroups = vscode.window.tabGroups;
 	
 	if (settingsObject.enableReadonly) {
@@ -15,16 +17,20 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// vscode.workspace.onDidOpenTextDocument(event => {
-	// 	console.log();
-	// });
-
-	vscode.window.onDidChangeActiveTextEditor(async event => {
-		const Uri = event?.document?.uri;
-		const notVSCodeScheme = (Uri?.scheme !== 'vscode-userdata')  &&  (Uri?.scheme !== 'vscode-settings');
+	// this captures drag/drop into a window as well
+	const onChangeEditor = vscode.window.onDidChangeActiveTextEditor(async event => {
 		
-		if (Uri  &&  notVSCodeScheme  &&  await isNonWorkspace(Uri)) await setTabToReadOnly(Uri, true);
+		if (!event) return;
+		
+		const Uri = event?.document?.uri;
+		
+		if (settingsObject.enableReadonly) {
+			if (Uri  &&  !schemeToIgnore(Uri.scheme)  &&  isNonWorkspace(Uri))
+				await setTabToReadOnly(Uri, true);
+		}
 	});
+	
+  context.subscriptions.push(onChangeEditor);	
 
   // ---------------------------------------------------------------------------------------------
 
@@ -32,7 +38,8 @@ export async function activate(context: vscode.ExtensionContext) {
     
     if (event.affectsConfiguration(EXTENSION_NAME)) {  // = "read-only.non-workspaceFiles"
 
-			const settingsObject: DecoratorSettings = await getSettings();
+			settingsObject = await getSettings();
+			
 			if (settingsObject.enableReadonly) {
 				const tabGroups: vscode.TabGroups = vscode.window.tabGroups;
 				await setTabsToReadOnly(tabGroups);

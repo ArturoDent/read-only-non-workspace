@@ -37,4 +37,8 @@ Unrelated to this extension, but if you want files to be marked and locked as re
 * 0.1.0 Initial release.
 
 * 0.1.1 Add a missing `await`.  
-* 0.1.2 Simplfy scheme checking for `vscode-` files like settings and keybindings.
+* 0.1.2 Simplfy scheme checking for `vscode-` files like settings and keybindings.  
+
+* 0.2.0 Fix ignoring setting on onDidChangeActiveTextEditor.  
+&emsp;&emsp; Ignore git and output schemes.
+
