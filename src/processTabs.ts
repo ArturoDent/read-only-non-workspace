@@ -1,8 +1,18 @@
 import * as vscode from 'vscode';
 import * as utilities from "./utilities";
+import * as sessionTracker from './sessionTracker';
+import { schemeToIgnore } from './utilities';
 
 
-export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
+/**
+ * Used on reload and setting enable.
+ * 
+ * Cycle through all tabs and set to read-only if non-workspace
+ * by calling setTabToReadOnly()
+ * @param {vscode.TabGroups} tabGroups 
+ * @param {vscode.StatusBarItem} statusBarItem 
+ */
+export async function setTabsToReadOnly(tabGroups: vscode.TabGroups, statusBarItem: vscode.StatusBarItem)  {
 
   const activeGroup = tabGroups.activeTabGroup;
   const activeTabs: vscode.Tab[] = await getActiveTabs(tabGroups);
@@ -13,8 +23,13 @@ export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
 
       if (tab.input instanceof vscode.TabInputText) {
 
-        if (tab.input.uri.scheme !== 'vscode-userdata'  &&  tab.input.uri.scheme !== 'vscode-settings') {
-          if (isNonWorkspace(tab.input.uri)) await setTabToReadOnly(tab.input.uri, tab.isActive);
+        if (!schemeToIgnore(tab.input.uri.scheme)) {
+          
+          if (!sessionTracker.getFile(tab.input.uri.fsPath)) { // if not already in the sessionSet
+            
+            if (isNonWorkspace(tab.input.uri))
+              await setTabToReadOnly(tab.input.uri, tab.isActive);
+          }
         }
       }
     }
@@ -23,6 +38,12 @@ export async function setTabsToReadOnly(tabGroups: vscode.TabGroups)  {
 }
 
 
+/**
+ * Set this tab to read-only.  Because only the active tab can be set, re-set 
+ * the active tabs and groups after.  Update the sessionTracker(path, true).
+ * @param {vscode.Uri} Uri 
+ * @param {boolean} active 
+ */
 export async function setTabToReadOnly(Uri: vscode.Uri, active: boolean) {
   
   const tabGroups: vscode.TabGroups = vscode.window.tabGroups;
@@ -31,18 +52,33 @@ export async function setTabToReadOnly(Uri: vscode.Uri, active: boolean) {
   
   // if not the active tab, make it active so can use the setActiveEditorReadonlyInSession command
   if (!active) await vscode.commands.executeCommand('vscode.open', Uri);
+  
   await vscode.commands.executeCommand('workbench.action.files.setActiveEditorReadonlyInSession');
   
   // reset the active tab if it changed
   if (!active) await resetActiveTabs(tabGroups, activeGroup, activeTabs as vscode.Tab[]);
+  
+  sessionTracker.addFile(Uri.fsPath, true);
 }
 
-
+/**
+ * Get an array of active tab in each group.
+ * @param {vscode.TabGroups} tabGroups 
+ * @returns {Promise<vscode.Tab[]>}
+ */
 export async function getActiveTabs(tabGroups: vscode.TabGroups): Promise<vscode.Tab[]> {
   return  tabGroups?.all?.map((group) => group?.activeTab ) as vscode.Tab[];
 }
 
-
+/**
+ * Reset the active tab in each group.
+ * And return focus to the last activeGroup/activeTab.
+ * Need this because can set read-only the active tab only.
+ * 
+ * @param {vscode.TabGroups} tabGroups 
+ * @param {vscode.TabGroup} activeGroup 
+ * @param {vscode.Tab[]} activeTabs 
+ */
 export async function resetActiveTabs(tabGroups: vscode.TabGroups, activeGroup: vscode.TabGroup, activeTabs: vscode.Tab[]) {
 
   let index = 0;
@@ -66,8 +102,13 @@ export async function resetActiveTabs(tabGroups: vscode.TabGroups, activeGroup: 
 }
 
 
+/**
+ * The file is not in workspace if its folder is not a workspaceFolder.
+ * @param {vscode.Uri} Uri 
+ * @returns {boolean} file is not in the workspace
+ */
 export function isNonWorkspace(Uri: vscode.Uri): boolean {
-  // folder is undefined if uri not in workspace
+
   const folder = vscode.workspace.getWorkspaceFolder(Uri);
   return folder ? false : true;  
 }

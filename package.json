@@ -2,7 +2,7 @@
 	"name": "read-only-non-workspace",
 	"displayName": "Read-only: Non-workspace files",
 	"description": "Set all non-workspace files to read-only",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"preview": true,
 	"publisher": "ArturoDent",
 	"license": "MIT",
@@ -30,6 +30,13 @@
 	"browser": "./out/extension.js",
 
 	"contributes": {
+		"commands": [
+			{
+				"command": "read-only.non-workspaceFiles.statusBarItemHandler",
+				"title": "A snappy title here",
+				"enablement": "false"
+			}
+		],
 		"configuration": [
 			{
 				"title": "Read-only: Non-workspace Files",
@@ -40,6 +47,12 @@
 						"type": "boolean",
 						"default": false,
 						"markdownDescription": "Set non-workspace files to `read-only`."
+					},
+					"read-only.non-workspaceFiles.statusBarButton": {
+						"order": 1,
+						"type": "boolean",
+						"default": false,
+						"markdownDescription": "Show a \"button\" on the Status Bar to `toggle` the read-only status of the current file."
 					}
 				}
 			}

@@ -1,6 +1,8 @@
-// import * as vscode from 'vscode';
-
-
+/**
+ * 
+ * @param {Number} viewColumn 
+ * @returns {string} command to focus viewColumn group
+ */
 export async function getfocusGroupCommand(viewColumn: Number): Promise<string> {
 
 	// viewColumn is 1-based
@@ -36,10 +38,13 @@ export async function getfocusGroupCommand(viewColumn: Number): Promise<string> 
 	}
 }
 
+/**
+ * True if should ignore this scheme
+ * @param {string} scheme
+ * @returns {boolean}
+ */
 export function schemeToIgnore(scheme: string): boolean {
-	
 	const ignoreList = ['vscode-userdata', 'vscode-settings', 'output', 'git'];	
 	return ignoreList.includes(scheme);
-	// return (scheme === 'vscode-userdata'  ||  scheme === 'vscode-settings'  ||  scheme === 'output'  ||  scheme === 'git');
 }
 
