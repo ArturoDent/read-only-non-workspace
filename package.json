@@ -2,7 +2,7 @@
 	"name": "read-only-non-workspace",
 	"displayName": "Read-only: Non-workspace files",
 	"description": "Set all non-workspace files to read-only",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"preview": true,
 	"publisher": "ArturoDent",
 	"license": "MIT",
@@ -28,6 +28,10 @@
 	"activationEvents": [ "onStartupFinished"	],
 	"main": "./out/extension.js",
 	"browser": "./out/extension.js",
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
 
 	"contributes": {
 		"commands": [
