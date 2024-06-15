@@ -56,6 +56,18 @@
 					}
 				}
 			}
+		],
+		"colors": [
+			{
+				"id": "readOnly.nonWorkspaceFiles.statusBarItemForeground",
+				"description": "Color for the Read-only StatusBar button and icon text.",
+				"defaults": {
+				 "dark": "#fff",
+				 "light": "#000",
+				 "highContrast": "#fff",
+				 "highContrastLight": "#000"
+				}
+			}
 		]
 	},
 	"scripts": {

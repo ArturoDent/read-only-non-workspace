@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { EXTENSION_NAME, ExtensionSettings, getSettings } from "./config";
 import { setTabsToReadOnly, setTabToReadOnly, isNonWorkspace } from "./processTabs";
 import { schemeToIgnore } from './utilities';
-import { setUpStatusBarItem } from './statusBar';
+import { setUpStatusBarItem, toggleStatusBarIcon } from './statusBar';
 import * as sessionTracker from './sessionTracker';
 import { registerReadOnlyCommands, disposeReadOnlyCommands  } from './capture';
 
@@ -39,6 +39,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// this captures drag/drop into a window as well
 	const onChangeEditor = vscode.window.onDidChangeActiveTextEditor(async event => {
 		
+		// onChangeEditor() is sometimes fired twice for some reason, first time event is undefined
 		if (!event) {
 			if (statusBarItem) statusBarItem.hide();
 			return;
@@ -50,28 +51,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			//  &&  not set to read in session
 			if (Uri  &&  !schemeToIgnore(Uri.scheme)  &&  isNonWorkspace(Uri)) {
 				
-				if (sessionTracker.getFile(Uri.fsPath) === undefined) {
+				if (sessionTracker.getFile(Uri.fsPath) === undefined)
 					await setTabToReadOnly(Uri, true);
-					statusBarItem.text = "$(unlock) R-O UNLOCK";
-				}
-				else if (sessionTracker.getFile(Uri.fsPath)) {
-					statusBarItem.text = "$(unlock) R-O UNLOCK";
-				}
-				else {
-					statusBarItem.text = "$(lock) R-O LOCK";
-				}
+
+				await toggleStatusBarIcon(Uri.fsPath, statusBarItem);
 			}
 			else if (Uri  &&  !schemeToIgnore(Uri.scheme)  &&  !isNonWorkspace(Uri)) {
 				
-				if (sessionTracker.getFile(Uri.fsPath) === undefined) {
-					statusBarItem.text = "$(lock) R-O LOCK";
-				}
-				else if (sessionTracker.getFile(Uri.fsPath)) {
-					statusBarItem.text = "$(unlock) R-O UNLOCK";
-				}
-				else {
-					statusBarItem.text = "$(lock) R-O LOCK";
-				}
+				await toggleStatusBarIcon(Uri.fsPath, statusBarItem);
 			}
 		}
 		

@@ -34,7 +34,7 @@ File: Reset Active Editor Read-only in Session
 
 Enable this to show a "button" on the Status Bar that shows the read-only status of the current file.  This button can be clicked to toggle the read-only status.
 
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/main/images/toggleStatusBarItem.gif?raw=true" width="800" height="300" alt="shows the statusbar button and toggle state"/>  
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/master/images/toggleStatusBarItem.gif?raw=true" width="500" height="200" alt="shows the statusbar button and toggle state"/>  
 
 ## Known Issues
 
@@ -48,7 +48,44 @@ Unrelated to this extension, but if you want files to be marked and locked as re
 
 ## Status Bar Button colors
 
+You can set the foreground - the text and icon - colors in your `settings.json` like this:
 
+```jsonc
+ "workbench.colorCustomizations": {
+    
+    "readOnly.nonWorkspaceFiles.statusBarItemForeground": "#e41515"  // to change the default
+    // the default is white for dark themes and black for light themes
+ }
+ ```
+
+or
+
+ ```jsonc
+"workbench.colorCustomizations": {
+  "[Monokai]": {                // for a specific theme
+    "readOnly.nonWorkspaceFiles.statusBarItemForeground": "#229977"
+  },
+  "[Obsidian, Moon]": {        // for multiple themes
+    "readOnly.nonWorkspaceFiles.statusBarItemForeground": "#229977"
+  },
+  "[*Dark*]": {               // for all *Dark* named themes, like myDark and myDark2
+    "readOnly.nonWorkspaceFiles.statusBarItemForeground": "#229977"
+  }
+}
+ ```
+
+ The background and hover colors are determined by these other settings:
+
+ ```jsonc
+"workbench.colorCustomizations": {
+    
+  "readOnly.nonWorkspaceFiles.statusBarItemForeground": "#fff",   // text/icon color
+  
+  "statusBarItem.warningBackground": "#21c4bf",       // default is a reddish-brown
+  "statusBarItem.warningHoverBackground": "#74d459",  // default is red
+  "statusBarItem.warningHoverForeground": "#000",     // default is white
+}
+```
 
 ## Release Notes
 

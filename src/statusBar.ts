@@ -32,21 +32,20 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
   context.subscriptions.push(statusBarItem);
 
-  statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.prominentBackground');
-  // is there a prominent foreground?
-  statusBarItem.color = new vscode.ThemeColor('statusBarItem.prominentForeground');
+  statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+  statusBarItem.color = new vscode.ThemeColor('readOnly.nonWorkspaceFiles.statusBarItemForeground');
   
   // the initial editor when vscode loads
   const thisURI = vscode.window.activeTextEditor?.document?.uri;
   if (!thisURI) statusBarItem.hide();
   else if (!schemeToIgnore(thisURI.scheme)) statusBarItem.show();
   
-  // statusBarItem.name = "Toggle read-only for the current file";
-  statusBarItem.tooltip = "Toggle read-only status for the current file";
+  const activeTab = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
+  statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` status for **" + activeTab + "**");
 
   let myCommand: vscode.Command = {
     title: "some title",
-    command: 'read-only.non-workspaceFiles.statusBarItemHandler',
+    command: 'read-only.non-workspaceFiles.statusBarItemHandler'
     // arguments: [thisURI]
   };
   statusBarItem.command = myCommand;
@@ -55,12 +54,21 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
 }
 
 /**
- * Toggle the lock/inlock icon text in status bar
+ * Toggle the lock/inlock icon text and tooltip in the status bar
  * @param {string} fsPath 
  * @param {vscode.StatusBarItem} statusBarItem 
  */
 export async function toggleStatusBarIcon(fsPath: string, statusBarItem: vscode.StatusBarItem) {
   
-  if (sessionTracker.getFile(fsPath)) statusBarItem.text = "$(unlock) R-O UNLOCK";
-  else statusBarItem.text = "$(lock) R-O LOCK";
+  // if (sessionTracker.getFile(fsPath)) statusBarItem.text = "$(unlock) R-O UNLOCK";
+  // else statusBarItem.text = "$(lock) R-O LOCK";
+  
+  if (sessionTracker.getFile(fsPath))
+    statusBarItem.text = "$(unlock) R-O UNLOCK";
+  else if (statusBarItem.text !== "$(lock) R-O LOCK")
+    statusBarItem.text = "$(lock) R-O LOCK";  
+  
+  const activeTabLabel = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
+  if (activeTabLabel)
+    statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` status for **" + activeTabLabel + "**");
 }

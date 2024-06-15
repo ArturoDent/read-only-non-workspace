@@ -62,7 +62,7 @@ export async function registerSetROCommand(statusBarItem: vscode.StatusBarItem) 
     const filePath = vscode.window.activeTextEditor?.document.uri.fsPath;
     const fileScheme = vscode.window.activeTextEditor?.document.uri.scheme;
     
-    if (filePath  &&  fileScheme  &&  !schemeToIgnore(fileScheme)) {   // schemeToIgnore(fileScheme) ?
+    if (filePath  &&  fileScheme  &&  !schemeToIgnore(fileScheme)) {
       await globalThis.setDisposable.dispose();
       
       session.toggleMapStatus(filePath); 
