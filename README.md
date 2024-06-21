@@ -4,11 +4,13 @@ This extension will automatically set any non-workspace files to **read-only** i
 
 This works for any non-workspace files upon start-up (or reload) of vscode and when opening a file in an existing workspace (such as by dragging and dropping from a file explorer).
 
+Any file can be set to read-only (whether it is in the workspace or not).  Only non-workspace files are automatically set to read-only (if that setting is enabled), but this extension and its StatusBar button can be used on any file (except for a small number of special files like Settings, etc.).
+
 Works in single and multi-root workspaces.
 
 A lock icon will appear in the editor tab for any file set as read-only.
 
-A Status Bar button can be enabled which will show the writeable status and operates as a toggle when clicked.  
+A Status Bar button can be enabled which will show the "R-O" (read-only) status of the current file and an action which can be taken (to lock or to unlock) on the current file which operates as a toggle when clicked.  
 
 ## Extension Settings
 
@@ -32,7 +34,7 @@ File: Reset Active Editor Read-only in Session
 
 * `Read-only > Non-workspace Files: Status Bar Button`: disabled by default
 
-Enable this to show a "button" on the Status Bar that shows the read-only status of the current file.  This button can be clicked to toggle the read-only status.
+Enable this to show a "button" on the Status Bar that shows an action that can be taken, so a locked/read-only file will show `R-O  $(lock-closed)  Press to UN-LOCK` and a file which is currently writeable will show `R-O  $(lock-open)  Press to LOCK`.  This button can be clicked to toggle the read-only status.  The editor tab will have a lock icon if it is set to read-only and no lock icon if it is writeable.  
 
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/master/images/toggleStatusBarItem.gif?raw=true" width="500" height="200" alt="shows the statusbar button and toggle state"/>  
 
@@ -40,7 +42,7 @@ Enable this to show a "button" on the Status Bar that shows the read-only status
 
 If you have more than 8 editor groups open - and one of those beyond 8 is the active group - this extension cannot properly refocus the active editor group after setting any non-workspace files to read-only.
 
-This extension will attempt to keep the Status Bar button showing the proper state: locked (read-only) or unlocked (writeable).  There is no vscode extension api to directly do this however.  There are multiple ways to change the read-only status of the current file: (1) trigger one of the read-only session commands from the Command Palette, (2) click the Status Bar button provided by this extension, and (3) click the link in the suggestion text that pops up (to set to writeable) when you try to type in a locked (i.e., set to read-only) file.
+This extension will attempt to keep the Status Bar button showing the proper available action fo rthe current file: lock (make it read-only) or unlock (make a read-only file writeable).  There is no vscode extension api to directly do this however.  There are multiple ways to change the read-only status of the current file: (1) trigger one of the read-only session commands from the Command Palette, (2) click the Status Bar button provided by this extension, and (3) click the link in the suggestion text that pops up (to set to writeable) when you try to type in a locked (i.e., set to read-only) file.
 
 This extension can handle (1) and (2) but there is no way to detect action (3) so the lock/unlock icon and text in the Status Bar button will be incorrect for that one case.  Despite what the button shows the actual read-only status for the current file is changed to writeable when you take action (3).  It will be corrected when you **save** that file.  
 
@@ -98,3 +100,4 @@ or
 &emsp;&emsp; Ignore git and output schemes.
 
 * 0.3.0 Add a toggle read-only StatusBarItem and associated setting.  
+* 0.3.2 Switched sbItem text. Added icons contribution.  

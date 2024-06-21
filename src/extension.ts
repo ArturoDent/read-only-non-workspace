@@ -30,8 +30,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	
 	const fsPath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	if (fsPath) {
-		if (fsPath  &&  sessionTracker.getFile(fsPath)) statusBarItem.text = "$(unlock) R-O UNLOCK";
-		else statusBarItem.text = "$(lock) R-O LOCK";
+		toggleStatusBarIcon(fsPath, statusBarItem);
 	}
 
 	// ---------------------------------------------------------------------------------------------

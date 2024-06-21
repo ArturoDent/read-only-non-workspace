@@ -5,7 +5,7 @@ export const EXTENSION_NAME = "read-only.non-workspaceFiles";
 export interface ExtensionSettings {
   enableReadonly: boolean,
   enableStatusBarButton: boolean
-};
+}; 
 
 /**
  * Get the settings, return an object<boolean>

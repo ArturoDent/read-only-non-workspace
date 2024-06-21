@@ -2,7 +2,7 @@
 	"name": "read-only-non-workspace",
 	"displayName": "Read-only: Non-workspace files",
 	"description": "Set all non-workspace files to read-only",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"preview": true,
 	"publisher": "ArturoDent",
 	"license": "MIT",
@@ -34,6 +34,22 @@
 	],
 
 	"contributes": {
+		"icons": {
+			"lock-closed": {
+				"description": "lock closed",
+				"default": {
+					"fontPath": "icons/icomoon.woff",
+					"fontCharacter": "\\E98F"
+				}
+			},
+			"lock-open": {
+				"description": "lock open",
+				"default": {
+					"fontPath": "icons/icomoon.woff",
+					"fontCharacter": "\\E990"
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "read-only.non-workspaceFiles.statusBarItemHandler",

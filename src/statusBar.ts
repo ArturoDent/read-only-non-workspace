@@ -60,13 +60,15 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
  */
 export async function toggleStatusBarIcon(fsPath: string, statusBarItem: vscode.StatusBarItem) {
   
-  // if (sessionTracker.getFile(fsPath)) statusBarItem.text = "$(unlock) R-O UNLOCK";
-  // else statusBarItem.text = "$(lock) R-O LOCK";
+  // if (sessionTracker.getFile(fsPath))
+  //   statusBarItem.text = "$(unlock) R-O UNLOCK";
+  // else if (statusBarItem.text !== "$(lock) R-O LOCK")
+  //   statusBarItem.text = "$(lock) R-O LOCK";  
   
   if (sessionTracker.getFile(fsPath))
-    statusBarItem.text = "$(unlock) R-O UNLOCK";
-  else if (statusBarItem.text !== "$(lock) R-O LOCK")
-    statusBarItem.text = "$(lock) R-O LOCK";  
+    statusBarItem.text = "R-O  $(lock-closed)  Press to UN-LOCK";
+  else if (statusBarItem.text !== "R-O  $(lock-open)  Press to LOCK")
+    statusBarItem.text = "R-O  $(lock-open)  Press to LOCK";  
   
   const activeTabLabel = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
   if (activeTabLabel)
