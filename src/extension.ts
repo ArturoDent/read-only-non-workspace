@@ -17,9 +17,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	
 	let settingsObject: ExtensionSettings = await getSettings();
 	
-	let tabGroups: vscode.TabGroups = vscode.window.tabGroups;
+	const tabGroups: vscode.TabGroups = vscode.window.tabGroups;
+	const isAtLeastOneTab: boolean = tabGroups.all.some(group => group.tabs.some(tab => tab));
 	
-	if (settingsObject.enableReadonly) {
+	if (settingsObject.enableReadonly && isAtLeastOneTab) {
 		await setTabsToReadOnly(tabGroups, statusBarItem);
 	}
 	
@@ -93,16 +94,21 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const configChange = vscode.workspace.onDidChangeConfiguration(async (event) => {
     
-    if (event.affectsConfiguration(`${EXTENSION_NAME}.enable`)) {  // = "read-only.non-workspaceFiles"
-
-			settingsObject = await getSettings();
+		// EXTENSION_NAME = "read-only.non-workspaceFiles"
+		if (event.affectsConfiguration(`${EXTENSION_NAME}.enable`)) {
 			
-			if (settingsObject.enableReadonly) {
-				const tabGroups: vscode.TabGroups = vscode.window.tabGroups;
-				await setTabsToReadOnly(tabGroups, statusBarItem);
+			const isAtLeastOneTab: boolean = tabGroups.all.some(group => group.tabs.some(tab => tab));
+
+			if (isAtLeastOneTab) {
+				settingsObject = await getSettings();
+			
+				if (settingsObject.enableReadonly) {
+					const tabGroups: vscode.TabGroups = vscode.window.tabGroups;
+					await setTabsToReadOnly(tabGroups, statusBarItem);
+				}
 			}
 		}
-		else if (event.affectsConfiguration(`${EXTENSION_NAME}.statusBarButton`)) {  // = "read-only.non-workspaceFiles"
+		else if (event.affectsConfiguration(`${EXTENSION_NAME}.statusBarButton`)) {
 
 			settingsObject = await getSettings();
 			

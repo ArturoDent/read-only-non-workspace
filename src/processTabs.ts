@@ -85,16 +85,19 @@ export async function resetActiveTabs(tabGroups: vscode.TabGroups, activeGroup: 
 
   for await (const group of tabGroups.all) {
 
-    const openOptions = { preserveFocus: false, viewColumn: group.viewColumn };
-    const tab = activeTabs[index];
+    if (group.tabs.length) {
+      const openOptions = { preserveFocus: false, viewColumn: group.viewColumn };
+      const tab = activeTabs[index];
 
-    if (tab.input instanceof vscode.TabInputText) 
-      vscode.commands.executeCommand('vscode.open', tab.input.uri, openOptions);  // this is failing silently
+      // TODO if tab === undefined, no tabs opened on workspace
+      if (tab.input instanceof vscode.TabInputText)
+        vscode.commands.executeCommand('vscode.open', tab.input.uri, openOptions);  // this is failing silently
     
-    else if (tab.label === 'Settings'  &&  !tab.input)
-      vscode.commands.executeCommand('workbench.action.openSettings2');  // focus Settings UI if it was active
+      else if (tab.label === 'Settings' && !tab.input)
+        vscode.commands.executeCommand('workbench.action.openSettings2');  // focus Settings UI if it was active
     
-    index++;
+      index++;
+    }
   }
 
 	const focusGroupCommand = await utilities.getfocusGroupCommand(activeGroup.viewColumn);
@@ -109,6 +112,7 @@ export async function resetActiveTabs(tabGroups: vscode.TabGroups, activeGroup: 
  */
 export function isNonWorkspace(Uri: vscode.Uri): boolean {
 
+  // TODO: handle a new file?
   const folder = vscode.workspace.getWorkspaceFolder(Uri);
   return folder ? false : true;  
 }

@@ -36,9 +36,11 @@ File: Reset Active Editor Read-only in Session
 
 Enable this to show a "button" on the Status Bar that shows an action that can be taken, so a locked/read-only file will show `R-O  $(lock-closed)  Press to UN-LOCK` and a file which is currently writeable will show `R-O  $(lock-open)  Press to LOCK`.  This button can be clicked to toggle the read-only status.  The editor tab will have a lock icon if it is set to read-only and no lock icon if it is writeable.  
 
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/master/images/toggleStatusBarItem.gif?raw=true" width="500" height="200" alt="shows the statusbar button and toggle state"/>  
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/master/images/toggleStatusBarItem.gif?raw=true" width="600" height="300" alt="shows the statusbar button and toggle state"/>  
 
 ## Known Issues
+
+<!--  new workspace: all files are created RO -->
 
 If you have more than 8 editor groups open - and one of those beyond 8 is the active group - this extension cannot properly refocus the active editor group after setting any non-workspace files to read-only.
 
@@ -101,3 +103,4 @@ or
 
 * 0.3.0 Add a toggle read-only StatusBarItem and associated setting.  
 * 0.3.2 Switched sbItem text. Added icons contribution.  
+* 0.3.3 Fix handling of empty workspaces (possibly multiple editor groups with no tabs open).  
