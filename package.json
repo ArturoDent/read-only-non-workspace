@@ -2,16 +2,16 @@
 	"name": "read-only-non-workspace",
 	"displayName": "Read-only: Non-workspace files",
 	"description": "Set all non-workspace files to read-only",
-	"version": "0.3.3",
+	"version": "0.3.4-pr1",
 	"preview": true,
 	"publisher": "ArturoDent",
 	"license": "MIT",
 	"repository": {
-	 "type": "git",
-	 "url": "https://github.com/ArturoDent/read-only-non-workspace"
+		"type": "git",
+		"url": "git+https://github.com/ArturoDent/read-only-non-workspace.git"
 	},
 	"funding": {
-	 "url": "https://www.buymeacoffee.com/ArturoDent"
+		"url": "https://www.buymeacoffee.com/ArturoDent"
 	},
 	"engines": {
 		"vscode": "^1.84.0"
@@ -24,15 +24,16 @@
 		"readonly",
 		"non-workspace",
 		"nonWorkspace"
-	 ],
-	"activationEvents": [ "onStartupFinished"	],
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
 	"main": "./out/extension.js",
 	"browser": "./out/extension.js",
 	"extensionKind": [
 		"ui",
 		"workspace"
 	],
-
 	"contributes": {
 		"icons": {
 			"lock-closed": {
@@ -61,7 +62,6 @@
 			{
 				"title": "Read-only: Non-workspace Files",
 				"properties": {
-
 					"read-only.non-workspaceFiles.enable": {
 						"order": 0,
 						"type": "boolean",
@@ -73,6 +73,12 @@
 						"type": "boolean",
 						"default": false,
 						"markdownDescription": "Show a \"button\" on the Status Bar to `toggle` the read-only status of the current file."
+					},
+					"read-only.non-workspaceFiles.statusBarIconOnly": {
+						"order": 1,
+						"type": "boolean",
+						"default": false,
+						"markdownDescription": "Display only the padlock icon with no text on the Status Bar to save some space."
 					}
 				}
 			}
@@ -82,10 +88,10 @@
 				"id": "readOnly.nonWorkspaceFiles.statusBarItemForeground",
 				"description": "Color for the Read-only StatusBar button and icon text.",
 				"defaults": {
-				 "dark": "#fff",
-				 "light": "#000",
-				 "highContrast": "#fff",
-				 "highContrastLight": "#000"
+					"dark": "#fff",
+					"light": "#000",
+					"highContrast": "#fff",
+					"highContrastLight": "#000"
 				}
 			}
 		]
@@ -98,13 +104,13 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.84.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.30.0",
+		"@types/vscode": "^1.84.0",
 		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"eslint": "^6.8.0",
 		"glob": "^7.1.6",
 		"mocha": "^7.1.2",
 		"typescript": "^3.8.3",

@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		statusBarItem.show();
 		await registerReadOnlyCommands(statusBarItem);
 	}
-	
+
 	const fsPath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	if (fsPath) {
 		toggleStatusBarIcon(fsPath, statusBarItem);
@@ -115,7 +115,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			if (settingsObject.enableStatusBarButton)
 				statusBarItem.show();
 			else statusBarItem.hide();
-    }
+		}
   });
   
   context.subscriptions.push(configChange);
