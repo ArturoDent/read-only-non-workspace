@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import { schemeToIgnore } from './utilities';
 import * as sessionTracker from './sessionTracker';
+import { ExtensionSettings, getSettings } from "./config";
 
 
 /**
@@ -23,7 +24,7 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
       // all toggling of the session map and statusbar icon handled in the captured command
       await vscode.commands.executeCommand('workbench.action.files.toggleActiveEditorReadonlyInSession');
       
-      // refocus the active editor after clciking the status bar button
+      // refocus the active editor after clicking the status bar button
       await vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }
   });
@@ -41,7 +42,7 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
   else if (!schemeToIgnore(thisURI.scheme)) statusBarItem.show();
   
   const activeTab = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
-  statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` status for **" + activeTab + "**");
+  statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` editor status for **" + activeTab + "**");
 
   let myCommand: vscode.Command = {
     title: "some title",
@@ -54,7 +55,7 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
 }
 
 /**
- * Toggle the lock/inlock icon text and tooltip in the status bar
+ * Toggle the lock/unlock icon text and tooltip in the status bar
  * @param {string} fsPath 
  * @param {vscode.StatusBarItem} statusBarItem 
  */
@@ -65,12 +66,21 @@ export async function toggleStatusBarIcon(fsPath: string, statusBarItem: vscode.
   // else if (statusBarItem.text !== "$(lock) R-O LOCK")
   //   statusBarItem.text = "$(lock) R-O LOCK";  
   
+  let textLocked: string = "R-O  $(lock-closed)  Press to UN-LOCK";
+  let textUnlocked: string = "R-O  $(lock-open)  Press to LOCK";
+  let settingsObject: ExtensionSettings = await getSettings();
+
+  if (settingsObject.isStatusBarIconOnly) {
+    textLocked = "$(lock-closed)";
+    textUnlocked = "$(lock-open)";
+  }
+  
   if (sessionTracker.getFile(fsPath))
-    statusBarItem.text = "R-O  $(lock-closed)  Press to UN-LOCK";
-  else if (statusBarItem.text !== "R-O  $(lock-open)  Press to LOCK")
-    statusBarItem.text = "R-O  $(lock-open)  Press to LOCK";  
+    statusBarItem.text = textLocked;
+  else if (statusBarItem.text !== textUnlocked)
+    statusBarItem.text = textUnlocked;
   
   const activeTabLabel = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
   if (activeTabLabel)
-    statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` status for **" + activeTabLabel + "**");
+    statusBarItem.tooltip = new vscode.MarkdownString("Toggle `read-only` editor status for **" + activeTabLabel + "**");
 }
