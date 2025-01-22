@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 import { schemeToIgnore } from './utilities';
 import * as sessionTracker from './sessionTracker';
-import { ExtensionSettings, getSettings } from "./config";
+import { ExtensionSettings, getSettings, isStatusBarIconOnly } from "./config";
 
 
 /**
@@ -61,16 +61,13 @@ export async function setUpStatusBarItem(context: vscode.ExtensionContext, sessi
  */
 export async function toggleStatusBarIcon(fsPath: string, statusBarItem: vscode.StatusBarItem) {
   
-  // if (sessionTracker.getFile(fsPath))
-  //   statusBarItem.text = "$(unlock) R-O UNLOCK";
-  // else if (statusBarItem.text !== "$(lock) R-O LOCK")
-  //   statusBarItem.text = "$(lock) R-O LOCK";  
-  
-  let textLocked: string = "R-O  $(lock-closed)  Press to UN-LOCK";
-  let textUnlocked: string = "R-O  $(lock-open)  Press to LOCK";
-  let settingsObject: ExtensionSettings = await getSettings();
+  let   textLocked: string = "R-O  $(lock-closed)  Press to UN-LOCK";
+  let   textUnlocked: string = "R-O  $(lock-open)  Press to LOCK";
+  const settingsObject: ExtensionSettings = await getSettings();
 
-  if (settingsObject.isStatusBarIconOnly) {
+  // if (settingsObject.isStatusBarIconOnly) {
+  if (isStatusBarIconOnly) {
+
     textLocked = "$(lock-closed)";
     textUnlocked = "$(lock-open)";
   }

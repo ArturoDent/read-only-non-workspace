@@ -38,6 +38,10 @@ Enable this to show a "button" on the Status Bar that shows an action that can b
 
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <img src="https://github.com/ArturoDent/read-only-non-workspace/blob/master/images/toggleStatusBarItem.gif?raw=true" width="600" height="300" alt="shows the statusbar button and toggle state"/>  
 
+* `Read-only > Non-workspace Files: Status Bar Icon Only`: disabled by default
+
+The Status Bar will show the lock or unlock icon only, with no other text.  
+
 ## Known Issues
 
 <!--  new workspace: all files are created RO -->
@@ -101,6 +105,8 @@ or
 * 0.2.0 Fix ignoring setting on onDidChangeActiveTextEditor.  
 &emsp;&emsp; Ignore git and output schemes.
 
-* 0.3.0 Add a toggle read-only StatusBarItem and associated setting.  
-* 0.3.2 Switched sbItem text. Added icons contribution.  
-* 0.3.3 Fix handling of empty workspaces (possibly multiple editor groups with no tabs open).  
+* 0.3.0 Add a toggle read-only StatusBarItem and associated setting.
+* 0.3.2 Switched sbItem text. Added icons contribution.
+* 0.3.3 Fix handling of empty workspaces (possibly multiple editor groups with no tabs open).
+* 0.3.4 Added option to not show text on the Status Bar button (icon only), thanks to [@ssstain](https://github.com/ssstain).
+* 0.3.5 Reduce calls to getSettings() by exporting the `isStatusBarIconOnly` setting.  

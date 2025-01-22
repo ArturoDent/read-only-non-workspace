@@ -109,12 +109,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}
 		else if (event.affectsConfiguration(`${EXTENSION_NAME}.statusBarButton`)) {
-
 			settingsObject = await getSettings();
 			
 			if (settingsObject.enableStatusBarButton)
 				statusBarItem.show();
 			else statusBarItem.hide();
+		}
+		else if (event.affectsConfiguration(`${EXTENSION_NAME}.statusBarIconOnly`)) {
+			settingsObject = await getSettings();
 		}
   });
   
